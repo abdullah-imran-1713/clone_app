@@ -13,7 +13,7 @@
                 <button @click="showModal = true" class="post-button-css fw-bold"><img class="pe-2"
                         src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />Photos/Videos</button>
             </div>
-            <AppModal :show="showModal" crossColor="white" @close="showModal = false">
+            <AppModal :show="showModal" @close="showModal = false">
                 <div>
                     <div class="container">
 
@@ -26,9 +26,9 @@
                                 <input class="post-creation-form pt-3 pb-3" placeholder="What's on your mind?" />
                                 <div class="parent-upload-div">
                                     <div class="upload-div">
-                                        <div class="upload-inside-div d-flex flex-col justify-content-center text-white">
-                                            <img src="/assets/icons/upload-photo-icon.png" />
-                                            <div>Add Photos/Videos</div>
+                                        <div class="upload-inside-div d-flex flex-row justify-content-center text-white">
+                                           <div class="col"><img src="/assets/icons/upload-photo-icon.png" /></div> 
+                                            <div class="col">Add Photos/Videos</div>
                                         </div>
                                     </div>
                                 </div>

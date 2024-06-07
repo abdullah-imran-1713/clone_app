@@ -29,7 +29,7 @@
               account</AppButton>
 
             <!-- </NuxtLink> -->
-            <AppModal :show="showModal" @close="showModal = false">
+            <AppModal crossColor="dark" :show="showModal" @close="showModal = false">
               <div>
                 <div class="container">
 

@@ -2,6 +2,7 @@
   <div class="gender-option">
     <input
       type="radio"
+      name="gender"
       :id="label"
       :value="label"
       :checked="isChecked"
