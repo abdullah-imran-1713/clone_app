@@ -1,12 +1,8 @@
 <template>
   <div v-if="show" class="app-modal-overlay">
     <div class="app-modal">
-      <!-- <div class="app-modal-header"> -->
-
-
-      <!-- </div> -->
       <div class="app-modal-body">
-        <button :class="['close-btn', computedButtonClass]" @click="closeModal">×</button>
+        <button :class="['close-btn', computedButtonClass, closeButtonPosition]" @click="closeModal">×</button>
         <slot></slot>
       </div>
     </div>
@@ -26,28 +22,29 @@ const props = defineProps({
     type: String,
     default: CROSS_COLOR_TYPE.LIGHT,
     validator(value) {
-      console.log({ value })
-      // The value must match one of these strings
       const arrayValues = Object.values(CROSS_COLOR_TYPE);
       return arrayValues.includes(value);
     }
   },
+  closeButtonPosition: {
+    type: String,
+    default: 'top-right',
+    validator(value) {
+      // The value must match one of these strings
+      return ['top-right', 'top-right-colored'].includes(value);
+    }
+  }
 });
 
+const emit = defineEmits(['close']);
+
 function closeModal() {
-  this.$emit('close');
+  emit('close');
 }
 
 const computedButtonClass = computed(() => {
-  // const crossColorClasses = {
-  //   [CROSS_COLOR_TYPE.DARK]: 'dark',
-  //   [CROSS_COLOR_TYPE.LIGHT]: 'light'
-  // };
-  // return crossColorClasses[props.crossColor] || CROSS_COLOR_TYPE.LIGHT;
-
-  return CROSS_COLOR_TYPE[props.crossColor?.toUpperCase()] || CROSS_COLOR_TYPE.LIGHT;
+  return props.crossColor === CROSS_COLOR_TYPE.DARK ? 'dark' : 'light';
 });
-
 </script>
 
 <style scoped>
@@ -64,18 +61,11 @@ const computedButtonClass = computed(() => {
   z-index: 1000;
 }
 
-/* .app-modal {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-  } */
-
-.app-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.app-modal {
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
 }
 
 .app-modal-body {
@@ -87,9 +77,6 @@ const computedButtonClass = computed(() => {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  position: absolute;
-  right: 30px;
-  top: 20px;
 }
 
 .close-btn.dark {
@@ -100,8 +87,24 @@ const computedButtonClass = computed(() => {
   color: #ffffff;
 }
 
-/* .app-modal-footer {
-    margin-top: 20px;
-    text-align: right;
-  } */
+.close-btn.top-right {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 80px;
+  top: 20px;
+}
+
+.close-btn.top-right-colored {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  left: 460px;
+  top: 10px;
+  
+}
 </style>
