@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex justify-content-center parent-post-creation-div">
+  <div class="d-flex justify-content-center parent-post-creation-div pb-4">
     <div class="post-creation-div">
       <div class="container d-flex align-items-center">
         <img class="profile-display-css mt-3" src="/assets/images/no-disp.png" />
-        <button @click="showModal = true" class="like-input-field-div mt-3 ms-3">
+        <button @click="openModal" class="like-input-field-div mt-3 ms-3">
           <p class="pt-1">What's on your mind?</p>
         </button>
       </div>
@@ -12,13 +12,13 @@
       </div>
 
       <div class="d-flex justify-content-center mb-3 mt-2">
-        <button @click="showModal = true" class="post-button-css fw-bold">
+        <button @click="openModal" class="post-button-css fw-bold">
           <img class="pe-2"
             src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />
           Photos/Videos
         </button>
       </div>
-      <AppModal :show="showModal" @close="showModal = false" closeButtonPosition="top-right-colored">
+      <AppModal :show="showModal" @close="closeModal" closeButtonPosition="top-right-colored">
         <div>
           <div class="container">
             <form class="app-modal-form-container">
@@ -49,12 +49,13 @@
                     </div>
                   </div>
                 </div>
-                <input class="post-creation-form pt-3 pb-3 " placeholder="What's on your mind?" />
+                <input ref="postInput" class="post-creation-form pt-3 pb-3 " placeholder="What's on your mind?" />
                 <div v-if="showUploadDiv" class="parent-upload-div">
-                  <div class="upload-div d-flex flex-column align-items-center justify-content-center">
+                  <button @click="closeUploadDiv" type="button" class="div-closer">x</button>
+                  <button @click="triggerFileInput" type="button" class="upload-div d-flex flex-column align-items-center justify-content-center">
                     <img class="upload-img" src="/assets/icons/upload-photo-icon.png" />
                     <div class="upload-text">Add Photos/Videos</div>
-                  </div>
+                  </button>
                 </div>
                 <div class="outline">
                   <div class="row pt-3 ps-3">
@@ -64,12 +65,13 @@
                       </button>
                     </div>
                     <div class="col-1 me-2">
-                      <button type="button" @click="toggleUploadDiv" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top" title="Photos/Videos">
+                      <button  type="button" @click="toggleUploadDiv" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top" title="Photos/Videos">
                         <div class="to-round-upload-button">
                           <img
                             src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />
                         </div>
                       </button>
+                      <input  type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
                     </div>
                     <div class="col-1">
                       <img
@@ -89,7 +91,8 @@
                     </div>
                   </div>
                 </div>
-                
+
+                <AppButton buttonType="default">Post</AppButton>
               </div>
             </form>
           </div>
@@ -100,19 +103,52 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import AppSeparatorLine from './AppSeparatorLine.vue';
 import AppModal from './AppModal.vue';
 
 const showModal = ref(false);
 const showUploadDiv = ref(false);
+const fileInput = ref(null);
+const postInput = ref(null);
+
+const openModal = () => {
+  showModal.value = true;
+}
+
+const closeModal = () => {
+  showModal.value = false;
+}
 
 const toggleUploadDiv = () => {
   showUploadDiv.value = true;
 }
+
+const closeUploadDiv = () => {
+  showUploadDiv.value = false;
+}
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+}
+
+const handleFileChange = (event) => {
+  const files = event.target.files;
+  console.log('Selected files:', files);
+}
+
+watch(showModal, async (newVal) => {
+  if (newVal) {
+    await nextTick();
+    postInput.value.focus();
+  } else {
+    showUploadDiv.value = false;
+  }
+});
 </script>
 
 <style scoped>
+/* Add your styles here */
 .post-creation-div {
   width: 400px;
   background-color: rgb(43, 42, 42);
@@ -161,17 +197,24 @@ const toggleUploadDiv = () => {
   border: 1px solid rgb(153, 153, 153);
   padding: 10px;
   border-radius: 3%;
+  position: relative;
 }
 
 .upload-div {
   background-color: rgb(66, 66, 66);
   height: 200px;
   width: 100%;
+  border: none;
   border-radius: 3%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.upload-div:hover
+{
+  background-color: rgb(100, 100, 100);
 }
 
 .upload-img {
@@ -254,5 +297,25 @@ const toggleUploadDiv = () => {
   background-color: rgb(88, 88, 88);
   border-radius: 100px;
  
+}
+
+.div-closer
+{
+  background: rgb(48, 48, 48);
+  color: rgb(202, 202, 202);
+  border: none;
+  border-radius: 100px;
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.div-closer:hover
+{
+  background-color: rgb(88, 88, 88);
 }
 </style>

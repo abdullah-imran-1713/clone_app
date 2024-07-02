@@ -75,7 +75,7 @@ const computedButtonClass = computed(() => {
 .close-btn {
   background: none;
   border: none;
-  font-size: 24px;
+  
   cursor: pointer;
 }
 
@@ -84,7 +84,7 @@ const computedButtonClass = computed(() => {
 }
 
 .close-btn.light {
-  color: #ffffff;
+  color: rgb(202, 202, 202);
 }
 
 .close-btn.top-right {
@@ -98,13 +98,16 @@ const computedButtonClass = computed(() => {
 }
 
 .close-btn.top-right-colored {
-  background: none;
+  background: rgb(97, 96, 96);
   border: none;
-  font-size: 24px;
+  font-size: 15px;
   cursor: pointer;
   position: absolute;
   left: 460px;
   top: 10px;
+  border-radius: 100px;
+  width: 36px;
+  height: 36px;
   
 }
 </style>
