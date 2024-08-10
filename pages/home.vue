@@ -2,12 +2,14 @@
     <div>
         <AppHeader />
         <div class="main-container">
-            <div>
+            <div class="ps-4 pe-4">
                 <div class="row">
-                    <div class="col">
+                    <!-- Sidebar (Hidden on md screens and smaller) -->
+                    <div class="col-12 col-lg-4 d-none d-lg-block">
                         <AppSidebar />
                     </div>
-                    <div class="col">
+                    <!-- Main Content (Takes full width on md screens and adjusts on lg screens) -->
+                    <div class="col-12 col-md-6 col-lg-4">
                         <AppPostCreation />
                         <AppPostCard 
                             userName="Hanger" 
@@ -22,7 +24,8 @@
                             :userDisp="image.userdisp" 
                         />
                     </div>
-                    <div class="col">
+                    <!-- Sponsored Content (Hidden on small screens and smaller) -->
+                    <div class="col-12 col-md-6 col-lg-4 d-none d-sm-block">
                         <AppSponsored />
                     </div>
                 </div>
@@ -38,6 +41,5 @@ import { image } from '~/assets/images/propimg';
 <style scoped>
 .main-container {
     background-color: rgb(34, 33, 33);
-    
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div style="color: white" class="parent-sidebar-div">
         <nav class="sidebar">
-            <ul>
+            
                 <li class="d-flex align-item-center">
                     <img style="width: 30px; height: 30px; " src="/assets/images/no-disp.png"/>
                     <div class="ps-2">Drake</div>
@@ -27,7 +27,7 @@
                     <div class="ps-2">Videos</div>
                 </li>
                
-            </ul>
+            
         </nav>
     </div>
 </template>

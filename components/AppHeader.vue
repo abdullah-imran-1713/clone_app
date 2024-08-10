@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="nav-css d-flex align-items-center justify-content-between">
+        <nav class="nav-css d-flex align-items-center justify-content-between w-100">
             <div class="d-flex align-items-center">
                 <img class="ps-3" src="/assets/images/facebook-logo.png" />
                 <div class="search-wrapper">
