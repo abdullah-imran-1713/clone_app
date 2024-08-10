@@ -20,82 +20,204 @@
       </div>
       <AppModal :show="showModal" @close="closeModal" closeButtonPosition="top-right-colored">
         <div>
-          <div class="container">
-            <form class="app-modal-form-container">
-              <div class="form-div-container d-flex justify-content-center">
-                <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Create Post</h5>
-              </div>
-              <AppSeparatorLine color="rgb(71, 71, 71)" />
-              <div class="form-div-container">
-                <div>
-                  <div class="row">
-                    <div class="col-1">
-                      <img class="profile-display-css ps-1 mt-1 mb-1" src="/assets/images/no-disp.png" />
-                    </div>
-                    <div class="col">
-                      <div class="row">
-                        <div style="color: rgb(202, 202, 202);" class="col-1 ps-4">
-                          Username
-                        </div>
+          <transition name="slide-fade">
+            <div v-if="showFirstContent" key="first" class="container">
+              <form class="app-modal-form-container">
+                <div class="form-div-container d-flex justify-content-center">
+                  <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Create Post</h5>
+                </div>
+                <AppSeparatorLine color="rgb(71, 71, 71)" />
+                <div class="form-div-container">
+                  <div>
+                    <div class="row">
+                      <div class="col-1">
+                        <img class="profile-display-css ps-1 mt-1 mb-1" src="/assets/images/no-disp.png" />
                       </div>
-                      <div class="row">
-                        <div class="ps-4">
-                          <select class="dropdown-css" id="visibility">
-                            <option value="private">Private</option>
-                            <option value="public">Public</option>
-                          </select>
+                      <div class="col">
+                        <div class="row">
+                          <div style="color: rgb(202, 202, 202);" class="col-1 ps-4">
+                            Username
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="ps-4">
+                            <select class="dropdown-css" id="visibility">
+                              <option value="private">Private</option>
+                              <option value="public">Public</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <input ref="postInput" class="post-creation-form pt-3 pb-3 " placeholder="What's on your mind?" />
-                <div v-if="showUploadDiv" class="parent-upload-div">
-                  <button @click="closeUploadDiv" type="button" class="div-closer">x</button>
-                  <button @click="triggerFileInput" type="button" class="upload-div d-flex flex-column align-items-center justify-content-center">
-                    <img class="upload-img" src="/assets/icons/upload-photo-icon.png" />
-                    <div class="upload-text">Add Photos/Videos</div>
-                  </button>
-                </div>
-                <div class="outline">
-                  <div class="row pt-3 ps-3">
-                    <div class="col-6">
-                      <button class="add-post-button">
-                        <p style="color: rgb(202, 202, 202);">Add to your post</p>
-                      </button>
+                  <input v-model="postContent" ref="postInput" class="post-creation-form pt-3 pb-3 "
+                    placeholder="What's on your mind?" />
+                  <div v-if="showUploadDiv" class="parent-upload-div">
+                    <button @click="closeUploadDiv" type="button" class="div-closer">×</button>
+                    <button @click="triggerFileInput" type="button"
+                      class="upload-div d-flex flex-column align-items-center justify-content-center">
+                      <img class="upload-img" src="/assets/icons/upload-photo-icon.png" />
+                      <div class="upload-text">Add Photos/Videos</div>
+                    </button>
+                  </div>
+                  <div class="outline">
+                    <div class="row pt-3 ps-3">
+                      <div class="col-6">
+                        <button type="button" class="add-post-button" @click="handleSwap">
+                          <p style="color: rgb(202, 202, 202);">Add to your post</p>
+                        </button>
+                      </div>
+                      <div class="col-1">
+                        <button type="button" @click="toggleUploadDiv" class="upload-button-css"
+                          data-bs-toggle="tooltip" data-bs-placement="top" title="Photos/Videos">
+                          <div class="to-round-upload-button">
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />
+                          </div>
+                        </button>
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
+                      </div>
+                      <div class="col-1">
+                        <button type="button" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Tag People">
+                          <div class="to-round-upload-button">
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/b37mHA1PjfK.png?_nc_eui2=AeGONt6pxtA5Yt5AeVmJNQNhohqwRjkkxMOiGrBGOSTEwzaiuF4etDtFQ4pU2QESHol_5AetyEr9fHZnG5v4PukW" />
+                          </div>
+                        </button>
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
+                      </div>
+                      <div class="col-1">
+                        <button type="button" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Feeling/activity">
+                          <div class="to-round-upload-button">
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Y4mYLVOhTwq.png?_nc_eui2=AeH87oKC4Z4WRWcqaxXzmDSTvPIN-OmHLJy88g346YcsnNViViXC7_ykW8esU0vyKjxc9EJj71wY__qt0AKxckEi" />
+                          </div>
+                        </button>
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
+                      </div>
+                      <div class="col-1">
+                        <button type="button" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="Check in">
+                          <div class="to-round-upload-button">
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/y1/r/8zlaieBcZ72.png?_nc_eui2=AeHe2EBbIbRL1_1pkBUH7OOT88Ps36vvyGDzw-zfq-_IYMxIfwxXHh2Jcueh3geQxKbe4xtiu6l-K7xrJBWVV1Pf" />
+                          </div>
+                        </button>
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
+                      </div>
+                      <div class="col-1">
+                        <button type="button" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="GIF">
+                          <div class="to-round-upload-button">
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/q7MiRkL7MLC.png?_nc_eui2=AeHT6cKfZt1hONlGIqSieDlAJTqz5hgP3TklOrPmGA_dOX3ln_oHv5YuhX250lLRm0JBPuKpqe31Z4HZ16Ja52rk" />
+                          </div>
+                        </button>
+                        <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
+                      </div>
                     </div>
-                    <div class="col-1 me-2">
-                      <button  type="button" @click="toggleUploadDiv" class="upload-button-css" data-bs-toggle="tooltip" data-bs-placement="top" title="Photos/Videos">
-                        <div class="to-round-upload-button">
-                          <img
-                            src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />
+                  </div>
+
+                  <AppButton :disabled="!isPostEnabled" :button-type="'default'">Post</AppButton>
+                </div>
+              </form>
+            </div>
+            <div v-else key="second" class="container">
+              <!-- Second content of the modal -->
+              <form class="app-modal-form-container">
+                <div class="form-div-container d-flex justify-content-center">
+                  <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Add to your post</h5>
+                </div>
+                <AppSeparatorLine color="rgb(71, 71, 71)" />
+                <div class="form-div-container">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div>
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/Ivw7nhRtXyo.png?_nc_eui2=AeFaxPxfkHt_sHXlG4WJ0HdQPL4YoeGsw5I8vhih4azDkqqyKiBGBCGHYkPYFIksuLw97CQaz4Q8cEMVRzRw9PqA" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">Photo/video</div>
                         </div>
-                      </button>
-                      <input  type="file" ref="fileInput" @change="handleFileChange" style="display: none;" multiple />
-                    </div>
-                    <div class="col-1">
-                      <img
-                        src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/b37mHA1PjfK.png?_nc_eui2=AeGONt6pxtA5Yt5AeVmJNQNhohqwRjkkxMOiGrBGOSTEwzaiuF4etDtFQ4pU2QESHol_5AetyEr9fHZnG5v4PukW" />
-                    </div>
-                    <div class="col-1">
-                      <img
-                        src="https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Y4mYLVOhTwq.png?_nc_eui2=AeH87oKC4Z4WRWcqaxXzmDSTvPIN-OmHLJy88g346YcsnNViViXC7_ykW8esU0vyKjxc9EJj71wY__qt0AKxckEi" />
-                    </div>
-                    <div class="col-1">
-                      <img
-                        src="https://static.xx.fbcdn.net/rsrc.php/v3/y1/r/8zlaieBcZ72.png?_nc_eui2=AeHe2EBbIbRL1_1pkBUH7OOT88Ps36vvyGDzw-zfq-_IYMxIfwxXHh2Jcueh3geQxKbe4xtiu6l-K7xrJBWVV1Pf" />
-                    </div>
-                    <div class="col-1">
-                      <img
-                        src="https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/q7MiRkL7MLC.png?_nc_eui2=AeHT6cKfZt1hONlGIqSieDlAJTqz5hgP3TklOrPmGA_dOX3ln_oHv5YuhX250lLRm0JBPuKpqe31Z4HZ16Ja52rk" />
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div>
+                            <img
+                              src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/b37mHA1PjfK.png?_nc_eui2=AeGONt6pxtA5Yt5AeVmJNQNhohqwRjkkxMOiGrBGOSTEwzaiuF4etDtFQ4pU2QESHol_5AetyEr9fHZnG5v4PukW" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            Tag People
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div>
+                            <img
+                            src="https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Y4mYLVOhTwq.png?_nc_eui2=AeH87oKC4Z4WRWcqaxXzmDSTvPIN-OmHLJy88g346YcsnNViViXC7_ykW8esU0vyKjxc9EJj71wY__qt0AKxckEi" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            Feeling/activity
+                          </div>
+                        </div>
+                       
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div class="">
+                            <img
+                          src="https://static.xx.fbcdn.net/rsrc.php/v3/y1/r/8zlaieBcZ72.png?_nc_eui2=AeHe2EBbIbRL1_1pkBUH7OOT88Ps36vvyGDzw-zfq-_IYMxIfwxXHh2Jcueh3geQxKbe4xtiu6l-K7xrJBWVV1Pf" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            Check in
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div class="">
+                            <img
+                            src="https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/q7MiRkL7MLC.png?_nc_eui2=AeHT6cKfZt1hONlGIqSieDlAJTqz5hgP3TklOrPmGA_dOX3ln_oHv5YuhX250lLRm0JBPuKpqe31Z4HZ16Ja52rk" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            GIF
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div class="">
+                            <img
+                            src="https://static.xx.fbcdn.net/rsrc.php/v3/yr/r/c0dWho49-X3.png?_nc_eui2=AeEk5Uo0_KIBgwXmmsyyghULVnUPE18ZZ-dWdQ8TXxln587YF20Rmx9KtKMmM1sr61zfYMzEqmklljhLMd8gb2qt" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            Live Video
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 ">
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                          <div class="">
+                            <img
+                            src="https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/pkbalDbTOVI.png?_nc_eui2=AeEKzjk_mAxodW6oC1PuoZcQMb31Au0h4oAxvfUC7SHigDBYMhFJTeXztZuAQPAAbQ0pdF-9V3glEEVdnDSy5gtT" />
+                          </div>
+                          <div style="color: rgb(153, 153, 153);" class="ps-2 fw-bold">
+                            Life evnet
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <AppButton buttonType="default">Post</AppButton>
-              </div>
-            </form>
-          </div>
+              </form>
+              <!-- Rest of your second modal content -->
+            </div>
+          </transition>
         </div>
       </AppModal>
     </div>
@@ -103,14 +225,18 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import AppSeparatorLine from './AppSeparatorLine.vue';
 import AppModal from './AppModal.vue';
+import AppButton from './AppButton.vue';
 
 const showModal = ref(false);
 const showUploadDiv = ref(false);
 const fileInput = ref(null);
 const postInput = ref(null);
+const postContent = ref('');
+const showFirstContent = ref(true);
+const showSecondContent = ref(false);
 
 const openModal = () => {
   showModal.value = true;
@@ -137,7 +263,17 @@ const handleFileChange = (event) => {
   console.log('Selected files:', files);
 }
 
+const isPostEnabled = computed(() => postContent.value.trim().length > 0);
+
+const handleSwap = () =>
+{
+  showFirstContent.value = false;
+  showSecondContent.value = true;
+  
+}
+
 watch(showModal, async (newVal) => {
+  console.log({ newVal })
   if (newVal) {
     await nextTick();
     postInput.value.focus();
@@ -196,6 +332,7 @@ watch(showModal, async (newVal) => {
 .parent-upload-div {
   border: 1px solid rgb(153, 153, 153);
   padding: 10px;
+  margin-bottom: 3%;
   border-radius: 3%;
   position: relative;
 }
@@ -212,8 +349,7 @@ watch(showModal, async (newVal) => {
   justify-content: center;
 }
 
-.upload-div:hover
-{
+.upload-div:hover {
   background-color: rgb(100, 100, 100);
 }
 
@@ -225,8 +361,7 @@ watch(showModal, async (newVal) => {
   color: white;
 }
 
-.like-input-field-div
-{
+.like-input-field-div {
   background-color: rgb(71, 71, 71);
   border: none;
   border-radius: 20px;
@@ -238,69 +373,52 @@ watch(showModal, async (newVal) => {
   text-align: left;
 }
 
-.like-input-field-div:hover
-{
+.like-input-field-div:hover {
   background-color: rgb(90, 89, 89);
 }
 
-.profile-display-css
-{
-  width: 50px;
-  height: 45px;
-}
-
-.select 
-{
+.select {
   padding: 8px;
   font-size: 16px;
 }
 
-.dropdown-css
-{
+.dropdown-css {
   background-color: rgb(78, 77, 77);
   border-radius: 5px;
   border: none;
   color: rgb(202, 202, 202);
 }
 
-.dropdown-css:focus
-{
+.dropdown-css:focus {
   outline: none;
 }
 
-.outline
-{
+.outline {
   border: 1px solid rgb(71, 71, 71);
   border-radius: 10px;
 }
 
-.add-post-button
-{
+.add-post-button {
   border: none;
   background-color: transparent;
 }
 
-.upload-button-css
-{
+.upload-button-css {
   border: none;
   background-color: transparent;
 }
 
-.to-round-upload-button
-{
+.to-round-upload-button {
   width: 35px;
   height: 30px;
 }
 
-.to-round-upload-button:hover
-{
+.to-round-upload-button:hover {
   background-color: rgb(88, 88, 88);
   border-radius: 100px;
- 
 }
 
-.div-closer
-{
+.div-closer {
   background: rgb(48, 48, 48);
   color: rgb(202, 202, 202);
   border: none;
@@ -314,8 +432,22 @@ watch(showModal, async (newVal) => {
   top: 20px;
 }
 
-.div-closer:hover
-{
+.div-closer:hover {
   background-color: rgb(88, 88, 88);
+}
+
+/* Additional styles for the disabled button */
+.post-button {
+  background-color: rgb(0, 183, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.post-button.disabled {
+  background-color: rgb(153, 153, 153);
+  cursor: not-allowed;
 }
 </style>
