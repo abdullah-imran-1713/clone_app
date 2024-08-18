@@ -2,7 +2,7 @@
   <div v-if="show" class="app-modal-overlay">
     <div class="app-modal">
       <div class="app-modal-body">
-        <button :class="['close-btn', computedButtonClass, closeButtonPosition]" @click="closeModal">×</button>
+        <button v-if="!hideCloseButton" :class="['close-btn', computedButtonClass, closeButtonPosition]" @click="closeModal">×</button>
         <slot></slot>
       </div>
     </div>
@@ -33,6 +33,10 @@ const props = defineProps({
       // The value must match one of these strings
       return ['top-right', 'top-right-colored'].includes(value);
     }
+  },
+  hideCloseButton: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -103,7 +107,7 @@ const computedButtonClass = computed(() => {
   font-size: 15px;
   cursor: pointer;
   position: absolute;
-  left: 460px;
+  right: 30px;
   top: 10px;
   border-radius: 100px;
   width: 36px;
