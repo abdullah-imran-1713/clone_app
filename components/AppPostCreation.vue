@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center parent-post-creation-div pb-4">
-    <div class="post-creation-div mx-auto">
-      <div class="container d-flex align-items-center">
+    <div class="post-creation-div w-100">
+      <div class="w-100 d-flex align-items-center">
         <img class="profile-display-css mt-3" src="/assets/images/no-disp.png" />
         <button @click="openModal" class="like-input-field-div col-10 col-md-8 col-sm-8 mt-3 ms-3">
           <p class="pt-1">What's on your mind?</p>
@@ -18,7 +18,8 @@
           Photos/Videos
         </button>
       </div>
-      <AppModal :hideCloseButton="showSecondContent" :show="showModal" @close="closeModal" closeButtonPosition="top-right-colored">
+      <AppModal :hideCloseButton="showSecondContent" :show="showModal" @close="closeModal"
+        closeButtonPosition="top-right-colored">
         <div>
           <transition name="slide-fade">
             <div v-if="showFirstContent" key="first" class="container">
@@ -134,16 +135,24 @@
             <div v-else key="second" class="container">
               <!-- Second content of the modal -->
               <form ref="modalRef" class="app-modal-form-container">
-                <div  v-if="showSecondContent" class="form-div-container d-flex justify-content-center">
-                  <Icon class="back-arrow" @click="handleBack" aria-label="Back" name="material-symbols:arrow-back-rounded" color="grey" />
-                  <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Add to your post</h5>
+                <div v-if="showSecondContent" class="form-div-container d-flex justify-content-center">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-0">
+                        <Icon class="back-arrow" @click="handleBack" aria-label="Back" name="material-symbols:arrow-back-rounded" color="grey" />
+                      </div>
+                      <div class="col d-flex justify-content-center">
+                        <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Add to your post</h5>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <button v-if="!showSecondContent" class="modal-close" @click="closeModal" aria-label="Close"></button>
                 <AppSeparatorLine color="rgb(71, 71, 71)" />
                 <div class="form-div-container">
                   <div class="container">
                     <div class="row">
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12">
                         <button type="button" @click="handlePhotosVideosClick" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div>
@@ -154,7 +163,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div>
@@ -167,7 +176,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div>
@@ -180,7 +189,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div class="">
@@ -193,7 +202,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div class="">
@@ -206,7 +215,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div class="">
@@ -219,7 +228,7 @@
                           </div>
                         </button>
                       </div>
-                      <div class="col-6 ">
+                      <div class="col-md-6 col-sm-12 ">
                         <button type="button" class="upload-button-css-for-hover">
                           <div class="d-flex flex-row bd-highlight pb-1 pt-1">
                             <div class="">
@@ -340,7 +349,6 @@ onBeforeUnmount(() => {
 <style scoped>
 /* Add your styles here */
 .post-creation-div {
-  width: 400px;
   background-color: rgb(43, 42, 42);
   border-radius: 3%;
 }
