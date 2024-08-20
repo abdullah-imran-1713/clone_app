@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex justify-content-center mx-auto pb-4">
-        <div class="card" style="width: 400px; background-color: rgb(43, 42, 42)">
+    <div class="d-flex justify-content-center pb-4">
+        <div class="card" style="background-color: rgb(43, 42, 42)">
             <div class="card-body">
                 <div class="row">
                     <div class="col-2">
