@@ -112,6 +112,7 @@ const computedButtonClass = computed(() => {
   border-radius: 100px;
   width: 36px;
   height: 36px;
+  z-index: 2000;
   
 }
 </style>

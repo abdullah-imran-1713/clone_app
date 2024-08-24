@@ -3,7 +3,7 @@
     <div class="post-creation-div w-100">
       <div class="w-100 d-flex align-items-center">
         <img class="profile-display-css mt-3" src="/assets/images/no-disp.png" />
-        <button @click="openModal" class="like-input-field-div col-10 col-md-8 col-sm-8 mt-3 ms-3">
+        <button @click="openModal" class="like-input-field-div w-100 me-3 mt-3 ms-3">
           <p class="pt-1">What's on your mind?</p>
         </button>
       </div>
@@ -21,7 +21,7 @@
       <AppModal :hideCloseButton="showSecondContent" :show="showModal" @close="closeModal"
         closeButtonPosition="top-right-colored">
         <div>
-          <transition name="slide-fade">
+          
             <div v-if="showFirstContent" key="first" class="container">
               <form ref="modalRef" class="app-modal-form-container">
                 <div class="form-div-container d-flex justify-content-center">
@@ -58,12 +58,12 @@
                   </div>
                   <input v-model="postContent" ref="postInput" class="post-creation-form pt-3 pb-3 "
                     placeholder="What's on your mind?" />
-                  <div v-if="showUploadDiv" class="parent-upload-div">
-                    <button @click="closeUploadDiv" type="button" class="div-closer">×</button>
-                    <button @click="triggerFileInput" type="button"
-                      class="upload-div d-flex flex-column align-items-center justify-content-center">
-                      <img class="upload-img" src="/assets/icons/upload-photo-icon.png" />
-                      <div class="upload-text">Add Photos/Videos</div>
+                  <div  :class="{'parent-upload-div' : showUploadDiv,'d-none' :!showUploadDiv}">
+                    <button @click="closeUploadDiv" type="button" :class="{'div-closer' :showUploadDiv,'d-none' :!showUploadDiv}">×</button>
+                    <button  @click="triggerFileInput" type="button"
+                      :class="{'upload-div d-flex flex-column align-items-center justify-content-center' :showUploadDiv,'d-none' :!showUploadDiv}">
+                      <img :class="{'upload-img':showUploadDiv,'d-none' :!showUploadDiv}" src="/assets/icons/upload-photo-icon.png" />
+                      <div :class="{'upload-text':showUploadDiv,'d-none' :!showUploadDiv}">Add Photos/Videos</div>
                     </button>
                   </div>
                   <div class="outline">
@@ -247,7 +247,7 @@
 
               </form>
             </div>
-          </transition>
+        
         </div>
       </AppModal>
     </div>
@@ -267,7 +267,6 @@ const postInput = ref(null);
 const postContent = ref('');
 const showFirstContent = ref(true);
 const showSecondContent = ref(false);
-
 const modalRef = ref(null);
 
 const openModal = () => {
@@ -304,23 +303,30 @@ const handleFileChange = (event) => {
 const isPostEnabled = computed(() => postContent.value.trim().length > 0);
 
 const handleSwap = async () => {
+  // Hide current content with transition
   showUploadDiv.value = false;
   await nextTick();
-  showFirstContent.value = false;
-  await nextTick(); 
+  showFirstContent.value = false; 
+
+  // Wait for Vue to finish rendering before showing the new content
+  await nextTick();
+
   showSecondContent.value = true;
 };
 
 const handleBack = async () => {
+  // Hide current content with transition
   showSecondContent.value = false;
   await nextTick();
+
+  // Wait for Vue to finish rendering before showing the first content
   showFirstContent.value = true;
 };
 
 const handleClickOutside = (event) => {
   if (modalRef.value && !modalRef.value.contains(event.target)) {
     closeModal();
-    showFirstContent.value=true;
+    showFirstContent.value = true;
   }
 };
 
@@ -346,6 +352,7 @@ onBeforeUnmount(() => {
 </script>
 
 
+
 <style scoped>
 /* Add your styles here */
 .post-creation-div {
@@ -368,11 +375,25 @@ onBeforeUnmount(() => {
   color: rgb(153, 153, 153);
 }
 
-.app-modal-form-container {
+/* .app-modal-form-container {
   background-color: rgb(34, 33, 33);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
+} */
+
+.app-modal-form-container {
+  background-color: rgb(34, 33, 33);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Add transition */
+  opacity: 1; /* Default visible */
+  transform: scale(1); /* Default scale */
+}
+
+.app-modal-form-container.hidden {
+  opacity: 0;
+  transform: scale(0.95);
 }
 
 .form-div-container {
