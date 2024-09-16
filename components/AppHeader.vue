@@ -2,18 +2,28 @@
   <div>
     <nav class="nav-css d-flex align-items-center justify-content-between w-100">
       <div class="d-flex align-items-center">
-        <img :class="{'ps-3' :isFacebookLogoVisible,'d-none' :!isFacebookLogoVisible}" src="/assets/images/facebook-logo.png" />
+        <!-- Facebook logo with NuxtLink -->
+        <NuxtLink v-if="isFacebookLogoVisible" to="/home" class="ms-3" >
+          <img src="/assets/images/facebook-logo.png" />
+        </NuxtLink>
+        
+        <!-- Back arrow button -->
         <button class="border-0 bg-transparent" type="button" @click="toggleBackDefault">
-          <Icon :class="{'back-arrow' :!isFacebookLogoVisible, 'd-none' :isFacebookLogoVisible}" name="material-symbols:arrow-left-alt-rounded" color="grey"/>
+          <Icon :class="{ 'back-arrow': !isFacebookLogoVisible, 'd-none': isFacebookLogoVisible }" name="material-symbols:arrow-left-alt-rounded" color="grey" />
         </button>
+
+        <!-- Search wrapper -->
         <div :class="{ 'search-wrapper': isSearchWrapperVisible, 'd-none': !isSearchWrapperVisible }">
           <Icon :class="{ 'search-icon': isSearchWrapperVisible, 'd-none': !isSearchWrapperVisible }" name="material-symbols:search" color="grey" />
           <AppRoundedInput :class="{ 'd-none': !isSearchWrapperVisible }" placeholder="Search Facebook" />
         </div>
-        <button class=" p-0 border-0 bg-transparent" type="button" @click="toggleSearchWrapper">
+
+        <!-- Search button -->
+        <button class="p-0 border-0 bg-transparent" type="button" @click="toggleSearchWrapper">
           <Icon :class="{ 'search-icon-2': !isSearchWrapperVisible, 'd-none': isSearchWrapperVisible }" name="material-symbols:search" color="grey" />
         </button>
       </div>
+
       <!-- Messenger and DP Section -->
       <div class="d-flex align-items-center me-2">
         <div class="messenger-icon-div d-flex justify-content-center mt-1 mb-1">
@@ -32,36 +42,26 @@ const isSearchWrapperVisible = ref(true);
 const isFacebookLogoVisible = ref(true);
 
 const checkScreenSize = () => {
-  
-    isSearchWrapperVisible.value = window.innerWidth > 768;
-  
+  isSearchWrapperVisible.value = window.innerWidth > 768;
 };
 
 const toggleSearchWrapper = () => {
-    isSearchWrapperVisible.value=true;
-    isFacebookLogoVisible.value=false;
-
+  isSearchWrapperVisible.value = true;
+  isFacebookLogoVisible.value = false;
 };
 
 const toggleBackDefault = () => {
-
-  isFacebookLogoVisible.value=true;
-  isSearchWrapperVisible.value=false;
-
-
-}
+  isFacebookLogoVisible.value = true;
+  isSearchWrapperVisible.value = false;
+};
 
 onMounted(() => {
-  
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-  
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
 });
 
 onUnmounted(() => {
-  
-    window.removeEventListener('resize', checkScreenSize);
-  
+  window.removeEventListener('resize', checkScreenSize);
 });
 </script>
 
@@ -71,6 +71,7 @@ onUnmounted(() => {
   height: 55px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #525252;
 }
 
 .search-wrapper {
@@ -102,14 +103,13 @@ onUnmounted(() => {
   position: absolute;
   left: 10px;
 }
+
 .search-icon-2 {
   font-size: 30px;
-  font-weight: bold; 
+  font-weight: bold;
 }
 
-.back-arrow
-{
+.back-arrow {
   font-size: 30px;
 }
-
 </style>

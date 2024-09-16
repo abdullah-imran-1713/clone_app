@@ -1,14 +1,14 @@
 <template>
   <div class="d-flex justify-content-center parent-post-creation-div pb-4">
     <div class="post-creation-div w-100">
-      <div class="w-100 d-flex align-items-center">
+      <div class="ps-3 w-100 d-flex align-items-center">
         <img class="profile-display-css mt-3" src="/assets/images/no-disp.png" />
         <button @click="openModal" class="like-input-field-div w-100 me-3 mt-3 ms-3">
           <p class="pt-1">What's on your mind?</p>
         </button>
       </div>
       <div class="pt-3 pb-3 ps-3 pe-3">
-        <AppSeparatorLine color="rgb(71, 71, 71)" />
+        <AppSeparatorLine :customStyle="{ backgroundColor: 'rgb(71, 71, 71)', width: '100%', height: '1px' }" />
       </div>
 
       <div class="d-flex justify-content-center mb-3 mt-2">
@@ -27,7 +27,7 @@
                 <div class="form-div-container d-flex justify-content-center">
                   <h5 style="color: rgb(153, 153, 153)" class="fw-bold pt-2">Create Post</h5>
                 </div>
-                <AppSeparatorLine color="rgb(71, 71, 71)" />
+                <AppSeparatorLine :customStyle="{ backgroundColor: 'rgb(71, 71, 71)', width: '100%', height: '1px' }" />
                 <div class="form-div-container">
                   <div>
                     <div class="row">
@@ -128,7 +128,7 @@
                     </div>
                   </div>
 
-                  <AppButton :disabled="!isPostEnabled" :button-type="'default'">Post</AppButton>
+                  <AppButton :disabled="!isPostEnabled" :button-type="'default'" :custom-style="{lineHeight:'38px',marginTop:'2%'}">Post</AppButton>
                 </div>
               </form>
             </div>
@@ -148,7 +148,7 @@
                   </div>
                 </div>
                 <button v-if="!showSecondContent" class="modal-close" @click="closeModal" aria-label="Close"></button>
-                <AppSeparatorLine color="rgb(71, 71, 71)" />
+                <AppSeparatorLine :customStyle="{ backgroundColor: 'rgb(71, 71, 71)', width: '100%', height: '1px' }" />
                 <div class="form-div-container">
                   <div class="container">
                     <div class="row">

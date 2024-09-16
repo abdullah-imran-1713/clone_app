@@ -1,37 +1,40 @@
 <template>
-    <div style="color: white" class="parent-sidebar-div">
-        <nav class="sidebar">
-            
-                <li class="d-flex align-item-center">
-                    <img style="width: 30px; height: 30px; " src="/assets/images/no-disp.png"/>
-                    <div class="ps-2">Drake</div>
-                </li>
-                <li class="d-flex align-item-center pt-4">
-                    <img style="width: 30px; height: 30px; " src="/assets/icons/friends-icon.png"/>
-                    <div class="ps-2">Friends</div>
-                </li>
-                <li class="d-flex align-item-center pt-4">
-                    <img style="width: 30px; height: 30px; " src="/assets/icons/memories-icon.png"/>
-                    <div class="ps-2">Memories</div>
-                </li>
-                <li class="d-flex align-item-center pt-4">
-                    <img style="width: 30px; height: 30px; " src="/assets/icons/saved-icon.png"/>
-                    <div class="ps-2">Saved</div>
-                </li>
-                <li class="d-flex align-item-center pt-4">
-                    <img style="width: 30px; height: 30px; " src="/assets/icons/groups-icon.png"/>
-                    <div class="ps-2">Groups</div>
-                </li>
-                <li class="d-flex align-item-center pt-4">
-                    <img style="width: 30px; height: 30px; " src="/assets/icons/video-icon.png"/>
-                    <div class="ps-2">Videos</div>
-                </li>
-               
+    <div v-if="home" style="color: white" class="parent-sidebar-div">
+        <nav>
+
+            <AppSidebarData class="pt-2 pb-2" :image="image.userdisp" text="Drake" link="/profile" />
+            <AppSidebarData class="pt-2 pb-2" :image="icons.friendsicon" text="Friends" link="/friends" />
+            <AppSidebarData class="pt-2 pb-2" :image="icons.memoriesicon" text="Memories" link="/memories"/>
+            <AppSidebarData class="pt-2 pb-2" :image="icons.savedicon" text="Saved" link="/saved" />
+            <AppSidebarData class="pt-2 pb-2" :image="icons.groupsicon" text="Groups" link="/groups"/>
+            <AppSidebarData class="pt-2 pb-2" :image="icons.videosicon" text="Videos" link="videos" />
             
         </nav>
     </div>
+
+    <div v-if="friends" :style="{ color: 'white' }" class="parent-sidebar-div">
+        <nav>
+
+            <AppSidebarData class="pt-2 pb-2" :image="icons.friendrequesticon" text="Friend requests" link="/friends/requests" />
+            <AppSidebarData class="pt-2 pb-2" :image="icons.viewallfriendsicon" text="All friends" link="/friends/lists" />
+
+        </nav>
+    </div>
 </template>
-<script>
+<script setup>
+import {icons} from '~/assets/icons/propicons';
+import { image } from '~/assets/images/propimg';
+
+defineProps({
+    home:{
+        type:Boolean,
+        default:null
+    },
+    friends:{
+        type:Boolean,
+        default:null
+    }
+})
 
 </script>
 <style scoped >
@@ -48,7 +51,6 @@
     {
         list-style-type: none;
     }
-
 
 
 </style>

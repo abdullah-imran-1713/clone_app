@@ -11,13 +11,16 @@
           </div>
           <div class="col-sm-12 col-md-6 for-md-screen">
             <div class="form-container">
-              <form>
-                <AppInput for="email" type="email" placeholder="Email address or phone number" borderColor="blue" />
-                <AppInput for="password" type="password" placeholder="Password" borderColor="blue" />
+
+
+
+              <form @submit.prevent="handleLogin">
+                <AppInput v-model="email" type="email" placeholder="Email address" borderColor="blue" required />
+                <AppInput v-model="password" type="password" placeholder="Password" borderColor="blue" required />
+                <AppButton type="submit" class="d-flex justify-content-center mb-2"
+                  :customStyle="{ lineHeight: '48px' }">Log In</AppButton>
               </form>
-              <NuxtLink to="/home">
-                <AppButton class="d-flex justify-content-center">Log in</AppButton>
-              </NuxtLink>
+
               <div class="d-flex justify-content-center">
                 <NuxtLink class="link-font" to="/identify">Forgotten password?</NuxtLink>
               </div>
@@ -26,7 +29,8 @@
               </div>
               <!-- <NuxtLink class="text-decoration-none" to="/account"> -->
 
-              <AppButton @click="showModal = true" class="d-flex justify-content-center" buttonType="primary">Create new
+              <AppButton @click="showModal = true" class="d-flex justify-content-center" buttonType="primary"
+                :customStyle="{ lineHeight:'48px' }">Create new
                 account</AppButton>
 
               <!-- </NuxtLink> -->
@@ -34,31 +38,48 @@
                 <div>
                   <div class="container">
 
-                    <form class="app-modal-form-container">
+
+
+
+
+                    <form @submit.prevent="handleSignup" class="app-modal-form-container">
                       <div class="form-div-container">
                         <h2>Sign Up</h2>
                         <p>It's quick and easy.</p>
                       </div>
-                      <AppSeparatorLine color="#ccc" />
+                      <AppSeparatorLine :customStyle="{ backgroundColor: '#ccc', width: '100%', height: '1px' }" />
                       <div class="form-div-container">
                         <div>
-                          <div class="row">
+                          <div v-if="error" class="row">
                             <div class="col">
-                              <AppInput for="name" type="name" placeholder="First name" borderColor="grey" />
-                            </div>
-                            <div class="col">
-                              <AppInput for="name" type="name" placeholder="Surname" borderColor="grey" />
+                              <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                              </div>
                             </div>
                           </div>
+                          <div class="row">
+                            <div class="col">
+                              <AppInput v-model="name" type="text" placeholder="First name" borderColor="grey" />
+                            </div>
+
+
+                            <!-- <div class="col">
+                              <AppInput for="name" type="name" placeholder="Surname" borderColor="grey" />
+                            </div> -->
+
+
+                          </div>
                         </div>
-                        <AppInput for="email" type="email" placeholder="Mobile Number or email address"
-                          borderColor="grey" />
-                        <AppInput for="password" type="password" placeholder="New Password" borderColor="grey" />
+                        
+    <AppInput v-model="email" type="email" placeholder="Mobile Number or email address" borderColor="grey" />
+    <AppInput v-model="password" type="password" placeholder="New Password" borderColor="grey" />
                         <p>Date of birth</p>
                         <AppDob />
                         <p>Gender</p>
                         <div>
-                          <div class="row">
+                          <AppInput v-model="gender" type="text" placeholder="Gender" />
+
+                          <!-- <div class="row">
                             <div class="col">
                               <AppGender label="Female" :selectedGender="gender"
                                 @update:selectedGender="updateGender" />
@@ -70,15 +91,20 @@
                               <AppGender label="Custom" :selectedGender="gender"
                                 @update:selectedGender="updateGender" />
                             </div>
-                          </div>
+                          </div> -->
+
+
                         </div>
 
-                        <AppButton class="d-flex justify-content-center" buttonType="primary"
-                          :customStyle="{ width: '70%' }">Sign up</AppButton>
+                        <AppButton type="submit" class="d-flex justify-content-center mt-3 " buttonType="primary"
+                          :customStyle="{ width: '70%', lineHeight:'48px' }">Sign up</AppButton>
 
+                        <div v-if="error">{{ error }}</div>
 
                       </div>
                     </form>
+
+
 
                   </div>
                 </div>
@@ -94,13 +120,78 @@
   
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useFetch } from '#app'
+
+const name = ref('')
+const email = ref('')
+const password = ref('')
+const dob = ref('07-29-2000') // Example additional field
+const gender = ref('') // Example additional field
+const error = ref('')
+const router = useRouter()
+
 
 const showModal = ref(false)
-const gender = ref('') // Initial gender value
 
-function updateGender(newGender) {
-  gender.value = newGender
+
+
+
+const handleLogin = async () => {
+  // Use useFetch to call the login API
+  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/login', {
+    method: 'POST',
+    body: { email: email.value, password: password.value },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (fetchError.value) {
+    error.value = fetchError.value.message // Adjust based on your error response structure
+  } else {
+    const token = data.value.token
+    localStorage.setItem('token', token)
+    router.push('/home') // Redirect to home or any other route
+  }
 }
+
+
+const handleSignup = async () => {
+
+
+  console.log(name.value);
+  console.log(email.value);
+  console.log(password.value);
+  console.log(gender.value);
+  console.log(dob.value);
+  // Use useFetch to call the signup API
+  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/signup', {
+    method: 'POST',
+    body: {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      dob: dob.value,
+      gender: gender.value
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    onResponse({ request, response, options }) {
+      console.log("API response");
+    },
+  })
+
+  if (fetchError.value) {
+    console.log({ e: fetchError.value })
+    error.value = fetchError.value?.data?.message // Adjust based on your error response structure
+  } else {
+    // Handle successful signup
+    router.push('/home') // Redirect to login or any other route
+  }
+}
+
 </script>
   
   <style scoped>
@@ -160,8 +251,3 @@ function updateGender(newGender) {
   }
 }
   </style>
-  
-
-
-
- 
