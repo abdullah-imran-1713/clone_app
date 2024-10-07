@@ -154,9 +154,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('click', handleClickOutside)
 })
-
+//'http://localhost:5000/auth/login'
 const handleLogin = async () => {
-  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/login', {
+  const { data, error: fetchError } = await useFetch('https://facebook-clone-app-backend-ha41.vercel.app/auth/login', {
     method: 'POST',
     body: { email: loginEmail.value, password: loginPassword.value }, // Use loginEmail and loginPassword
     headers: {
@@ -186,7 +186,7 @@ const handleSignup = async () => {
     return
   }
 
-  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/signup', {
+  const { data, error: fetchError } = await useFetch('https://facebook-clone-app-backend-ha41.vercel.app/auth/signup', {
     method: 'POST',
     body: {
       name: signupName.value, // Use signupName
