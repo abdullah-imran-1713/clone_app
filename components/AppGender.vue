@@ -13,25 +13,27 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue';
+import { defineProps, computed, defineEmits } from 'vue';
 
 const props = defineProps({
   label: {
     type: String,
-    required: true
+    required: true,
   },
   selectedGender: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
+
+const emit = defineEmits(['update:selectedGender']);
 
 const isChecked = computed(() => {
   return props.selectedGender === props.label;
 });
 
 const handleChange = () => {
-  emit('update:selectedGender', props.label);
+  emit('update:selectedGender', props.label); // Emit selected gender
 };
 </script>
 

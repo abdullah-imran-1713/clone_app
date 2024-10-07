@@ -147,6 +147,9 @@ col-8 col-sm-8 col-md-8 col-lg-8 ps-4
   </div>
 </template>
 
+
+
+
 <script setup>
 </script>
 
@@ -177,6 +180,7 @@ html, body {
   display: flex;
   margin-top: 50px; /* Match this value to the height of the header */
   height: calc(100vh - 50px); /* Adjust based on your header height */
+  background-color: rgb(34, 33, 33);
 }
 
 .sidebar-wrapper {

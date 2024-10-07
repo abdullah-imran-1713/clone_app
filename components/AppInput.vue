@@ -3,11 +3,10 @@
     <label :for="for"></label>
     <input
       :type="type"
-      :id="for"
       :placeholder="placeholder"
-      required
+      :required="required"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+       @input="$emit('update:modelValue', $event.target.value === '' ? null : $event.target.value)"
       :class="{ 'blue-border': borderColor === 'blue', 'grey-border': borderColor === 'grey' }"
     />
   </div>
@@ -18,7 +17,7 @@ export default {
   props: {
     for: {
       type: String,
-      required: true,
+      required: false, // Making `for` optional
     },
     type: {
       type: String,
@@ -36,10 +35,13 @@ export default {
       type: String,
       default: '',
     },
+    required: {
+      type: Boolean,
+      default: true, // Default is true, but you can pass `false`
+    },
   },
 }
 </script>
-
 
 <style scoped>
 .form-group {
