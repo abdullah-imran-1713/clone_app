@@ -16,7 +16,14 @@
             <div class="form-container">
               <form @submit.prevent="handleLogin">
                 <AppInput v-model="loginEmail" type="email" placeholder="Email address" borderColor="blue" required />
-                <AppInput v-model="loginPassword" type="password" placeholder="Password" borderColor="blue" required />
+                <div class="password-input-container w-100">
+                  <AppInput class="w-100" v-model="loginPassword" :type="isPasswordVisible ? 'text' : 'password'"
+                    placeholder="Password" borderColor="blue" required />
+                  <button type="button" @click="togglePasswordVisibility"
+                    class="text-black toggle-password-button-for-login">
+                    {{ isPasswordVisible ? 'Hide' : 'Show' }}
+                  </button>
+                </div>
                 <AppButton type="submit" class="d-flex justify-content-center mb-2"
                   :customStyle="{ lineHeight: '48px' }">Log In</AppButton>
               </form>
@@ -59,10 +66,11 @@
                         <AppInput v-model="signupEmail" type="email" placeholder="Email Address" borderColor="grey" />
                         <AppInput v-model="signupTel" type="tel" placeholder="Phone Number (optional)"
                           borderColor="grey" :required="false" />
-                        <AppInput class="password-input-container" v-model="signupPassword" :type="isPasswordVisible ? 'text' : 'password'"
-                          placeholder="Password" borderColor="grey" />
+                        <AppInput class="password-input-container" v-model="signupPassword"
+                          :type="isPasswordVisible ? 'text' : 'password'" placeholder="Password" borderColor="grey" />
 
-                        <button type="button" @click="togglePasswordVisibility" class="text-black toggle-password-button">
+                        <button type="button" @click="togglePasswordVisibility"
+                          class="text-black toggle-password-button-for-signup">
                           {{ isPasswordVisible ? 'Hide' : 'Show' }}
                         </button>
 
@@ -154,9 +162,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('click', handleClickOutside)
 })
-//'http://localhost:5000/auth/login'
+
 const handleLogin = async () => {
-  const { data, error: fetchError } = await useFetch('https://facebook-clone-app-backend-ha41.vercel.app/auth/login', {
+  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/login', {
     method: 'POST',
     body: { email: loginEmail.value, password: loginPassword.value }, // Use loginEmail and loginPassword
     headers: {
@@ -186,7 +194,7 @@ const handleSignup = async () => {
     return
   }
 
-  const { data, error: fetchError } = await useFetch('https://facebook-clone-app-backend-ha41.vercel.app/auth/signup', {
+  const { data, error: fetchError } = await useFetch('http://localhost:5000/auth/signup', {
     method: 'POST',
     body: {
       name: signupName.value, // Use signupName
@@ -274,7 +282,16 @@ const formatDateToMMDDYYYY = (date) => {
   flex-grow: 1; /* Allow the input to grow */
 }
 
-.toggle-password-button {
+.toggle-password-button-for-login {
+  position: absolute;
+  right: 10px; /* Adjust right spacing as needed */
+  bottom: 25px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #007bff; /* Customize color */
+}
+.toggle-password-button-for-signup {
   position: absolute;
   right: 33px; /* Adjust to fit within the input field */
   bottom: 268px;
