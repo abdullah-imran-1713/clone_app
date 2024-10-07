@@ -1,7 +1,14 @@
 <template>
   <div class="form-group">
     <label :for="for"></label>
-    <input :type="type" :id="for" :placeholder="placeholder" required :class="{ 'blue-border': borderColor === 'blue', 'grey-border': borderColor === 'grey' }" />
+    <input
+      :type="type"
+      :placeholder="placeholder"
+      :required="required"
+      :value="modelValue"
+       @input="$emit('update:modelValue', $event.target.value === '' ? null : $event.target.value)"
+      :class="{ 'blue-border': borderColor === 'blue', 'grey-border': borderColor === 'grey' }"
+    />
   </div>
 </template>
 
@@ -10,21 +17,29 @@ export default {
   props: {
     for: {
       type: String,
-      required: true
+      required: false, // Making `for` optional
     },
     type: {
       type: String,
-      default: 'text'
+      default: 'text',
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     borderColor: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+    modelValue: {  
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: true, // Default is true, but you can pass `false`
+    },
+  },
 }
 </script>
 

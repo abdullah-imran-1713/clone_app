@@ -65,12 +65,32 @@ const computedButtonClass = computed(() => {
   z-index: 1000;
 }
 
+/* Scrollbar styling for the modal form */
 .app-modal {
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
+  max-height: 90vh; /* Limit height to 90% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* For Firefox */
 }
+
+/* Scrollbar styling for WebKit-based browsers (Chrome, Safari) */
+.app-modal::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.app-modal::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded edges */
+}
+
+.app-modal::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* Darker color when hovered */
+}
+
+.app-modal::-webkit-scrollbar-track {
+  background: transparent; /* Track color */
+}
+
 
 .app-modal-body {
   position: relative;
@@ -97,7 +117,7 @@ const computedButtonClass = computed(() => {
   font-size: 24px;
   cursor: pointer;
   position: absolute;
-  right: 80px;
+  right: 30px;
   top: 20px;
 }
 
@@ -112,6 +132,7 @@ const computedButtonClass = computed(() => {
   border-radius: 100px;
   width: 36px;
   height: 36px;
+  z-index: 2000;
   
 }
 </style>

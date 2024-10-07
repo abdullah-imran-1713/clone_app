@@ -42,10 +42,8 @@ const computedButtonClass = computed(() => {
   color: #fff;
   border: none;
   border-radius: 6px;
-  line-height: 48px;
   transition: background-color 0.3s;
   font-weight: bold;
-  margin: 15px 0;
 }
 
 #btn:hover {

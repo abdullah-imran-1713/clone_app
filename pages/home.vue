@@ -5,11 +5,11 @@
             <div class="ps-4 pe-4">
                 <div class="row">
                     <!-- Sidebar (Hidden on md screens and smaller) -->
-                    <div class="col-12 col-lg-4 d-none d-lg-block">
-                        <AppSidebar />
+                    <div class="col-12 col-lg-4 d-none d-lg-block p-0">
+                        <AppSidebar :home="true" />
                     </div>
                     <!-- Main Content (Takes full width on md screens and adjusts on lg screens) -->
-                    <div class="col-12 col-md-7 col-lg-5">
+                    <div class="col-12 col-md-7 col-lg-4">
                         <AppPostCreation />
                         <AppPostCard 
                             userName="Hanger" 
@@ -25,7 +25,7 @@
                         />
                     </div>
                     <!-- Sponsored Content (Hidden on small screens and smaller) -->
-                    <div class="col-12 col-md-5 col-lg-3 d-none d-sm-block">
+                    <div class="col-12 col-md-5 col-lg-4 d-none d-sm-block">
                         <AppSponsored />
                     </div>
                 </div>
